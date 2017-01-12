@@ -1,0 +1,94 @@
+include "global.tbh"
+
+dim user_code as string(MAX_USER_CODE_LEN)
+
+'====================================================================
+sub on_sys_init()
+	dim i as word
+	
+	net.ip=IP_ADDRESS
+	
+	if stg_start()<>EN_STG_STATUS_OK then
+		sys.halt
+	end if
+
+	if fd.mount<>PL_FD_STATUS_OK then
+		if fd.formatj(fd.availableflashspace/2,32,100)<>PL_FD_STATUS_OK then
+			sys.halt
+		end if
+	
+		if fd.mount<>PL_FD_STATUS_OK then
+			sys.halt
+		end if
+	end if
+	
+	
+	if tbl_start()<>EN_STG_STATUS_OK then
+		sys.halt
+	end if
+
+	'provide a 5-second opportunity to initialize settings
+	pat.play("RG~",PL_PAT_CANINT)
+	i=sys.timercount
+	while sys.timercount-i<10
+		if button.pressed=YES then
+			pat.play("-~",PL_PAT_CANINT)
+			
+			if stg_restore_multiple(EN_STG_INIT_MODE_NORMAL)<>EN_STG_STATUS_OK then
+				sys.halt
+			end if
+			
+			if fd.formatj(fd.availableflashspace/2,32,100)<>PL_FD_STATUS_OK then
+				sys.halt
+			end if
+			
+			pat.play("G~",PL_PAT_CANINT)
+lbl1:		goto lbl1 'expecting the device to be rebooted
+		end if
+	wend
+
+	if agg_start(PL_SOCK_INTERFACE_NET,"admin","test_dev","pwd",AGG_IP_ADDRESS,6480,600,YES)<>EN_AGG_STATUS_OK then
+		sys.halt
+	end if
+
+	setup_serial_port()
+
+	pat.play("G-G----~",PL_PAT_CANINT)
+end sub
+
+sub on_sys_timer()
+	agg_proc_timer()
+end sub
+
+sub on_sock_data_arrival()
+	agg_proc_data()
+end sub
+
+sub on_sock_event(newstate as enum pl_sock_state, newstatesimple as enum pl_sock_state_simple)
+	agg_proc_sock_event(newstate,newstatesimple)
+end sub
+
+sub on_button_pressed()
+	generate_door_event()
+end sub
+
+sub on_sock_data_sent()
+	agg_proc_data_sent()
+end sub
+
+sub on_ser_data_arrival()
+	dim pos as byte
+	
+	user_code=user_code+ser.getdata(255)
+	pos=instr(1,user_code,chr(13),1)
+	
+	if pos=0 and len(user_code)>=MAX_USER_CODE_LEN then
+			user_code=""
+			exit sub
+	end if
+	
+	if pos>0 then
+		'<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<,,
+	end if
+	
+end sub

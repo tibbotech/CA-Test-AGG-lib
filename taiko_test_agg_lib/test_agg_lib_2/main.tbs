@@ -1,0 +1,44 @@
+include "global.tbh"
+
+'====================================================================
+sub on_sys_init()
+	dim i as word
+	
+	net.ip=IP_ADDRESS
+	
+	if stg_start()<>EN_STG_STATUS_OK then
+		sys.halt
+	end if
+	
+	'provide a 5-second opportunity to initialize settings
+	pat.play("RG~",PL_PAT_CANINT)
+	i=sys.timercount
+	while sys.timercount-i<10
+		if button.pressed=YES then
+			pat.play("-~",PL_PAT_CANINT)
+			if stg_restore_multiple(EN_STG_INIT_MODE_NORMAL)<>EN_STG_STATUS_OK then
+				sys.halt
+			end if
+			pat.play("G~",PL_PAT_CANINT)
+lbl1:		goto lbl1 'expecting the device to be rebooted
+		end if
+	wend
+
+	if agg_start(PL_SOCK_INTERFACE_NET,"admin","test_dev","pwd",AGG_IP_ADDRESS,6480,600,YES)<>EN_AGG_STATUS_OK then
+		sys.halt
+	end if
+
+	pat.play("G-G----~",PL_PAT_CANINT)
+end sub
+
+sub on_sys_timer()
+	agg_proc_timer()
+end sub
+
+sub on_sock_data_arrival()
+	agg_proc_data()
+end sub
+
+sub on_sock_event(newstate as enum pl_sock_state, newstatesimple as enum pl_sock_state_simple)
+	agg_proc_sock_event(newstate,newstatesimple)
+end sub

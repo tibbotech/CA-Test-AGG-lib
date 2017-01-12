@@ -1,0 +1,37 @@
+==info	root	<R=<AGG_TEST_DEVICE><apoint>>
+==variables	root	<R=<version><<<version><S>> <M=1> <X=1>><Version><1><0><^><remote|General><^>>
+~~<R=<date><<<date><D>> <M=1> <X=1>><Date/Time><1><0><^><remote|General><^>>
+~~<R=<modtime><<<variable><S>> <<modtime><D><F=N>>><Modification time><1><0><^><^><^>>
+>>BR	S	<R=<BR><<<BR><I><V=<L=0 13>><S=<1200=0><2400=1><4800=2><9600=3><19200=4><38400=5><57600=6><115200=7><150=8><300=9><600=10><28800=11><230400=12><460800=13>>><M=1><X=1>><Baudrate><1><1><^><remote|Access Control><^>>
+>>EG	S	<R=<EG><<<EG><B>><M=1><X=1>><Generate Event><1><1><^><remote|Access Control><^>>
+>>UT	S	<R=<UT><<<UT><I><V=<L=0 255>>><M=1><X=1>><UT><1><1><^><remote|Access Control><^>>
+>>DS	S	<R=<DS><<<DS><I><S=<Closed=0><Opened=1>><V=<L=0 1>>><M=1><X=1>><Door State><1><0><^><remote|Access Control><^>>
+>>user	T	<R=<user><<<user_id><S><V=<L=1 14>><A=123456>><<name><S><V=<L=0 31>>><M=0><X=1024>><user><1><1><^><remote|Default><^>>
+==functions	root	<R=<hash><<<context><S>><<variable><S>><M=1><X=1>><<<hash><I>><M=1><X=1>><Table Hash><^><^>>
+~~<R=<finishTable><<<context><S>><<variable><S>><M=1><X=1>><<<hash><I>><M=1><X=1>><Finish Table><^><^>>
+~~<R=<startTable><<<context><S>><<variable><S>><M=1><X=1>><<M=0><X=0>><Start Table><^><^>>
+~~<R=<addRecord><<<context><S>><<variable><S>><<record><S>><M=1><X=1>><<M=0><X=0>><Add Record><^><^>>
+~~<R=<removeRecord><<<context><S>><<variable><S>><<id><S>><M=1><X=1>><<M=0><X=0>><Remove Record><^><^>>
+~~<R=<updateRecord><<<context><S>><<variable><S>><<record><S>><M=1><X=1>><<M=0><X=0>><Update Record><^><^>>
+~~<R=<putRecords><<<record><S>><M=1><X=1>><<M=0><X=0>><Put Record><^><^>>
+~~<R=<login><<<challenge><S>><M=1><X=1>><<<owner><S>><<name><S>><<response><S>><M=1><X=1>><Login><^><^>>
+~~<R=<register><<M=0><X=0>><<<password><S>><M=1><X=1>><Auto Register><^><^>>
+~~<R=<synchronized><<M=0><X=0>><<M=0><X=0>><Synchronized><^><^>>
+>>UL	<R=<UL><<<DUR><I><D=Door Unlock Duration>><M=1><X=1>><<<status><I><S=<Successful=1><Failed=0>>><M=1><X=1>><Unlock the Door><^><remote>>
+==events	root
+>>DB	I1	<R=<DB><<<Date/Time><D>><M=1><X=1>><Demo access control device just powered up><^><1><remote>>
+#define TBL_TIMESTAMP 1
+#define STG_TIMESTAMP 1
+#define AGG_DESCRIPTOR_FILE "aggregate.xtxt"
+#define AGG_TABLE_CONTROL 1
+#define AGG_SETTING_CONTROL 1
+#define AGG_MAX_RECONNECTION_DELAY 15
+#define AGG_DEBUG_PRINT 1
+#define AGG_MAX_NUM_ENTITY_TYPES 4
+#define AGG_MAX_CONTEXT_NAME_LEN 4
+#define AGG_MAX_NUM_SCRIPT_LINES 7
+#define AGG_MAX_SCRIPT_LINE_NAME_LEN 4
+#define AGG_MAX_FUNCTION_NAME_LEN 12
+#define AGG_MAX_NUM_STORED_EVENTS 0
+@@STG_RefPath=settings.xtxt
+@@TBL_RefPath=tables.xtxt

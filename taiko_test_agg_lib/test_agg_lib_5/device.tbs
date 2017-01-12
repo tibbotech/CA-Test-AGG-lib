@@ -1,0 +1,80 @@
+include "global.tbh"
+
+'====================================================================
+function callback_agg_get_firmware_version() as string
+	callback_agg_get_firmware_version=FIRMWARE_VERSION
+end function
+
+sub callback_agg_pre_buffrq(required_buff_pages as byte)
+	
+end sub
+
+sub callback_agg_buff_released()
+	
+end sub
+
+sub callback_agg_error(failure_code as en_agg_status_codes, byref error_item as string)
+	
+end sub
+
+function callback_agg_device_function(byref function_name as string ,byref context_name as string, byref function_input as string, byref function_output as string) as ok_ng
+	dim unlock_duration as byte
+	
+	select case function_name
+	case "UL":
+		unlock_duration=val(agg_record_decode(function_input,0))
+		'additional code needed here
+		function_output=""
+		agg_record_encode(function_output,"1")
+	end select
+end function
+
+sub callback_agg_synchronized()
+	generate_boot_event()
+end sub
+
+sub callback_agg_convert_setting(byref setting_name as string, index as byte, byref setting_value as string, op as en_agg_rdwr)
+	
+end sub
+
+
+sub callback_stg_error(byref stg_name_or_num as string,index as byte,status as en_stg_status_codes)
+	
+end sub
+
+sub callback_stg_pre_get(byref stg_name_or_num as string,index as byte,byref stg_value as string)
+	
+end sub
+
+sub callback_stg_post_set(byref stg_name_or_num as string, index as byte,byref stg_value as string)
+	
+end sub
+
+sub callback_tbl_error(status as en_tbl_status_codes)
+	
+end sub
+
+function callback_tbl_fail_to_open(byref filename as string, status as pl_fd_status_codes, filenum as byte) as no_yes
+	
+end function
+
+sub callback_tbl_field_error(byref file_name as string,byref field_name as string,tbl_result as en_tbl_status_codes)
+	
+end sub
+
+sub callback_tbl_modified(byref file_name as string, modified_operation as en_tbl_modified_operation)
+	
+end sub
+
+sub generate_boot_event()
+		dim s, event_str as string
+		dim dcount,mcount as word
+		dim sec as byte
+
+		rtc.getdata(dcount,mcount,sec)
+		td_to_str(s,dcount,mcount,sec,0)
+		td_str_date_time_reformat(s,TD_STR_ADD_FORMATTING,TD_DATE_FORMAT_YYYYMMDD)
+		
+		agg_record_encode(event_str,s)
+		agg_fire_instant_event("root","DB",event_str,EN_AGG_EVENT_LEVEL_USE_DEFAULT)
+end sub

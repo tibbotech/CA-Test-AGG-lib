@@ -1,0 +1,33 @@
+==info	root	<R=<AGG_TEST_DEVICE><apoint>>
+==variables	root	<R=<version><<<version><S>> <M=1> <X=1>><Version><1><0><^><remote|General><^>>
+~~<R=<date><<<date><D>> <M=1> <X=1>><Date/Time><1><0><^><remote|General><^>>
+~~<R=<modtime><<<variable><S>> <<modtime><D><F=N>>><Modification time><1><0><^><^><^>>
+==functions	root	<R=<hash><<<context><S>><<variable><S>><M=1><X=1>><<<hash><I>><M=1><X=1>><Table Hash><^><^>>
+~~<R=<finishTable><<<context><S>><<variable><S>><M=1><X=1>><<<hash><I>><M=1><X=1>><Finish Table><^><^>>
+~~<R=<startTable><<<context><S>><<variable><S>><M=1><X=1>><<M=0><X=0>><Start Table><^><^>>
+~~<R=<addRecord><<<context><S>><<variable><S>><<record><S>><M=1><X=1>><<M=0><X=0>><Add Record><^><^>>
+~~<R=<removeRecord><<<context><S>><<variable><S>><<id><S>><M=1><X=1>><<M=0><X=0>><Remove Record><^><^>>
+~~<R=<updateRecord><<<context><S>><<variable><S>><<record><S>><M=1><X=1>><<M=0><X=0>><Update Record><^><^>>
+~~<R=<putRecords><<<record><S>><M=1><X=1>><<M=0><X=0>><Put Record><^><^>>
+~~<R=<login><<<challenge><S>><M=1><X=1>><<<owner><S>><<name><S>><<response><S>><M=1><X=1>><Login><^><^>>
+~~<R=<register><<M=0><X=0>><<<password><S>><M=1><X=1>><Auto Register><^><^>>
+~~<R=<synchronized><<M=0><X=0>><<M=0><X=0>><Synchronized><^><^>>
+>>buzz	<R=<buzz><<<bzzb><S>><M=1><X=1>><<M=0><X=0>><Buzz><^><remote>>
+>>init	<R=<init><<M=0><X=0>><<<status><S>><M=1><X=1>><Initialize><^><remote>>
+>>reboot	<R=<reboot><<M=0><X=0>><<M=0><X=0>><Reboot><^><remote>>
+==events	root
+>>CR	S2	<R=<CR><<<type><I><S=<IN=0><OUT=1><TEMP_IN=2><TEMP_OUT=3>><D=Event Type>><<id><S><D=Card ID>><<date><S><D=Date>><M=1><X=1>><Card Read><^><2><remote>>
+>>XX	I2	<R=<XX><<<type><I><S=<X1=0><X2=1><X3=2>><D=FLD1>><<id><S><D=FLD2>><M=1><X=1>><INSTANT EVENT><^><2><remote>>
+#define TBL_TIMESTAMP 1
+#define STG_TIMESTAMP 1
+#define AGG_DESCRIPTOR_FILE "aggregate.xtxt"
+#define AGG_MAX_RECONNECTION_DELAY 15
+#define AGG_DEBUG_PRINT 1
+#define AGG_MAX_NUM_ENTITY_TYPES 4
+#define AGG_MAX_CONTEXT_NAME_LEN 4
+#define AGG_MAX_NUM_SCRIPT_LINES 5
+#define AGG_MAX_SCRIPT_LINE_NAME_LEN 6
+#define AGG_MAX_FUNCTION_NAME_LEN 12
+#define AGG_MAX_NUM_STORED_EVENTS 1
+@@STG_RefPath=settings.xtxt
+@@TBL_RefPath=

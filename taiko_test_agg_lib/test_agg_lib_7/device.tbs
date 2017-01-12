@@ -1,0 +1,214 @@
+include "global.tbh"
+
+'====================================================================
+function callback_agg_get_firmware_version() as string
+	callback_agg_get_firmware_version=FIRMWARE_VERSION
+end function
+
+sub callback_agg_pre_buffrq(required_buff_pages as byte)
+	
+end sub
+
+sub callback_agg_buff_released()
+	
+end sub
+
+sub callback_agg_error(failure_code as en_agg_status_codes, byref error_item as string)
+	
+end sub
+
+function callback_agg_device_function(byref function_name as string ,byref context_name as string, byref function_input as string, byref function_output as string) as ok_ng
+	dim unlock_duration as byte
+	
+	select case function_name
+	case "UL":
+		unlock_duration=val(agg_record_decode(function_input,0))
+		'additional code needed here
+		function_output=""
+		agg_record_encode(function_output,"1")
+	end select
+end function
+
+sub callback_agg_synchronized()
+	generate_boot_event()
+end sub
+
+sub callback_agg_convert_setting(byref setting_name as string, index as byte, byref setting_value as string, op as en_agg_rdwr)
+	
+end sub
+
+sub callback_agg_convert_event_field(byref table_name as string, byref field_name as string, byref field_value as string)
+	Select case table_name
+	case "ACE":
+		if field_name="DS" then
+			select case field_value
+			case "ACE":
+				field_value="Access Control Event"
+				
+			end select
+		end if
+		
+	end select
+end sub
+
+sub callback_stg_error(byref stg_name_or_num as string,index as byte,status as en_stg_status_codes)
+	
+end sub
+
+sub callback_stg_pre_get(byref stg_name_or_num as string,index as byte,byref stg_value as string)
+	select case stg_name_or_num
+	case "BR":
+		stg_value=str(baudrate_get())
+	
+	case "DS":
+		if button.pressed=NO then
+			stg_value="0"
+		else
+			stg_value="1"
+		end if
+	
+	end select
+end sub
+
+sub callback_stg_post_set(byref stg_name_or_num as string, index as byte,byref stg_value as string)
+	select case stg_name_or_num
+	case "BR":
+		baudrate_set(val(stg_value))
+		
+	end select
+end sub
+
+sub callback_tbl_error(status as en_tbl_status_codes)
+	
+end sub
+
+function callback_tbl_fail_to_open(byref filename as string, status as pl_fd_status_codes, filenum as byte) as no_yes
+	
+end function
+
+sub callback_tbl_field_error(byref file_name as string,byref field_name as string,tbl_result as en_tbl_status_codes)
+	
+end sub
+
+sub callback_tbl_modified(byref file_name as string, modified_operation as en_tbl_modified_operation)
+	
+end sub
+
+sub generate_boot_event()
+		if stg_get("EG",0)=0 then exit sub
+				
+		dim s, event_str as string
+		dim dcount,mcount as word
+		dim sec as byte
+
+		rtc.getdata(dcount,mcount,sec)
+		td_to_str(s,dcount,mcount,sec,0)
+		td_str_date_time_reformat(s,TD_STR_ADD_FORMATTING,TD_DATE_FORMAT_YYYYMMDD)
+		
+		agg_record_encode(event_str,s)
+		agg_fire_instant_event("root","DB",event_str,EN_AGG_EVENT_LEVEL_NOTICE)
+end sub
+
+sub generate_door_event()
+		if stg_get("EG",0)=0 then exit sub
+
+		dim s as string
+		dim dcount,mcount as word
+		dim sec as byte
+
+		rtc.getdata(dcount,mcount,sec)
+		td_to_str(s,dcount,mcount,sec,0)
+	
+		tbl_select("ACE","ACE")
+		tbl_field_set("DT",s)
+		tbl_field_set("AEL","2")
+		tbl_field_set("DS","ACE") 'temporary -- real event descriptions added in the next step ("ACE" is expanded into "Access Control Event" in callback_agg_convert_event_field())
+		tbl_record_add("")
+		agg_stored_event_added("ACE")
+		agg_proc_stored_events() 'optional (speeds up event sending)
+end sub
+
+sub setup_serial_port()
+	ser.num=0
+	ser.txbuffrq(0)
+	ser.rxbuffrq(0)
+	sys.buffalloc
+	baudrate_set(val(stg_get("BR",0)))
+end sub
+
+sub baudrate_set(br as standard_baudrates)
+'Set the UART according to the supplied baudrate "number"
+
+select case br
+	case BR_1200:
+		ser.baudrate=ser.div9600*8
+	case BR_2400:
+		ser.baudrate=ser.div9600*4
+	case BR_4800:
+		ser.baudrate=ser.div9600*2
+	case BR_9600:
+		ser.baudrate=ser.div9600
+	case BR_19200:
+		ser.baudrate=ser.div9600/2
+	case BR_38400:
+		ser.baudrate=ser.div9600/4
+	case BR_57600:
+		ser.baudrate=ser.div9600/6
+	case BR_115200:
+		ser.baudrate=ser.div9600/12
+	case BR_150:
+		ser.baudrate=ser.div9600*64
+	case BR_300:
+		ser.baudrate=ser.div9600*32
+	case BR_600:
+		ser.baudrate=ser.div9600*16
+	case BR_28800:
+		ser.baudrate=ser.div9600/3
+	case BR_230400:
+		ser.baudrate=ser.div9600/24
+	case else:
+		ser.baudrate=ser.div9600/48
+	end select
+end sub
+
+function baudrate_get() as standard_baudrates
+	dim i as word
+	
+	if ser.baudrate<=ser.div9600 then
+		i=ser.div9600/ser.baudrate
+		select case i
+		case 1
+			baudrate_get=BR_9600
+		case 2
+			baudrate_get=BR_19200
+		case 4
+			baudrate_get=BR_38400
+		case 6
+			baudrate_get=BR_57600
+		case 12
+			baudrate_get=BR_115200
+		case 24
+			baudrate_get=BR_230400
+		case else
+			baudrate_get=BR_460800
+		end select
+	else
+		i=ser.baudrate/ser.div9600
+		select case i
+		case 2
+			baudrate_get=BR_4800
+		case 4
+			baudrate_get=BR_2400
+		case 8
+			baudrate_get=BR_1200
+		case 64
+			baudrate_get=BR_150
+		case 32
+			baudrate_get=BR_300
+		case 16
+			baudrate_get=BR_600
+		case else
+			baudrate_get=BR_28800
+		end select
+	end if
+end function

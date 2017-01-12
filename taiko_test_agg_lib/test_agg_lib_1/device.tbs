@@ -1,0 +1,27 @@
+include "global.tbh"
+
+'====================================================================
+function callback_agg_get_firmware_version() as string
+	callback_agg_get_firmware_version=FIRMWARE_VERSION
+end function
+
+sub callback_agg_pre_buffrq(required_buff_pages as byte)
+	
+end sub
+
+sub callback_agg_buff_released()
+	
+end sub
+
+sub callback_agg_error(failure_code as en_agg_status_codes, byref error_item as string)
+	
+end sub
+
+function callback_agg_device_function(byref function_name as string ,byref context_name as string, byref function_input as string, byref function_output as string) as ok_ng
+	
+end function
+
+sub callback_agg_synchronized()
+	
+end sub
+

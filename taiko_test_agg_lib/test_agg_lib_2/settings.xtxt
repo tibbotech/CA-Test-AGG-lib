@@ -1,0 +1,10 @@
+>>BR	E	B	1	0	13	A	0	Baudrate
+>>EG	E	B	1	0	1	A	0	Event generation
+>>UT	E	B	1	0	255	A	10	Unlock time
+>>DS	R	B	1	0	1	A	0	Door state
+#define STG_DESCRIPTOR_FILE "settings.xtxt"
+#define STG_TIMESTAMP 1
+#define STG_MAX_NUM_SETTINGS 4
+#define STG_RAM_ARRAY_SIZE 9
+#define STG_MAX_SETTING_NAME_LEN 2
+#define STG_MAX_SETTING_VALUE_LEN 3

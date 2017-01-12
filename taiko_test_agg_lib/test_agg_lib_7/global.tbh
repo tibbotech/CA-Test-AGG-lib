@@ -1,0 +1,52 @@
+'DEFINES-------------------------------------------------------------
+
+Const FIRMWARE_VERSION="{AGG_TEST_DEVICE V1.00}"
+Const IP_ADDRESS="192.168.1.200"		'<---- change as needed
+Const AGG_IP_ADDRESS="192.168.1.56"		'<---- change as needed
+
+Const MAX_USER_CODE_LEN=15	'length of the user_id field in the user table +1 (for CR)
+
+enum standard_baudrates
+	BR_1200,
+	BR_2400,
+	BR_4800,
+	BR_9600,
+	BR_19200,
+	BR_38400,
+	BR_57600,
+	BR_115200,
+	BR_150,
+	BR_300,
+	BR_600,
+	BR_28800,
+	BR_230400,
+	BR_460800
+end enum
+
+
+'INCLUDES------------------------------------------------------------
+
+includepp "aggregate.xtxt"
+include "aggregate\trunk\aggregate.tbh"
+
+includepp "settings.xtxt"
+include "settings\trunk\settings.tbh"
+
+
+includepp "tables.xtxt"
+include "tables\trunk\tables.tbh"
+
+includepp "filenum.txt" '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+include "filenum\trunk\filenum.tbh"
+
+include "sock\trunk\sock.tbh"
+include "time\trunk\time.tbh"
+
+
+'DECLARATIONS--------------------------------------------------------
+
+declare sub generate_boot_event()
+declare sub generate_door_event()
+declare sub setup_serial_port()
+declare sub baudrate_set(br as standard_baudrates)
+declare function baudrate_get() as standard_baudrates
