@@ -33,9 +33,9 @@ sub callback_agg_synchronized()
 	generate_boot_event()
 end sub
 
-sub callback_agg_convert_setting(byref setting_name as string, index as byte, byref setting_value as string, op as en_agg_rdwr)
+function callback_agg_convert_setting(byref setting_name as string, index as byte, byref setting_value as string, op as en_agg_rdwr) as ok_ng
 	
-end sub
+end function
 
 sub callback_agg_convert_event_field(byref table_name as string, byref field_name as string, byref field_value as string)
 	Select case table_name
@@ -107,4 +107,32 @@ sub generate_door_event()
 		tbl_record_add("")
 		agg_stored_event_added("ACE")
 		agg_proc_stored_events() 'optional (speeds up event sending)
+end sub
+
+function callback_agg_external_data_source(byref source_type as string, byref parameter1 as string, byref parameter2 as string, byref parameter3 as string, rw as en_agg_rdwr)as ok_ng
+	
+end function
+
+function callback_agg_external_data_modtime_sg(byref source_type as string, byref item_name as string, byref date_time as string, op as en_agg_rdwr) as ok_ng
+	
+end function
+
+function callback_agg_setting_saved(byref setting_name as string,index as byte, byref setting_val as string) as en_stg_status_codes
+	
+end function
+
+sub callback_agg_setting_error(byref setting_name as string, error_code as en_stg_status_codes)
+	
+end sub
+
+sub callback_agg_table_error(byref table_name as string, error_code as en_tbl_status_codes)
+	
+end sub
+
+sub callback_agg_convert_table_field(byref table_name as string, byref field_name as string, byref field_value as string, op as en_agg_rdwr)
+	
+end sub
+
+sub callback_agg_firmware_upload_progress(total_size as dword, remain_size as dword)
+	
 end sub

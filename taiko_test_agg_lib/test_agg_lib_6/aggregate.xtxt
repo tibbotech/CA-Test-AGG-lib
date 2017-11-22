@@ -19,11 +19,12 @@
 ~~<R=<synchronized><<M=0><X=0>><<M=0><X=0>><Synchronized><^><^>>
 >>UL	<R=<UL><<<DUR><I><D=Door Unlock Duration>><M=1><X=1>><<<status><I><S=<Successful=1><Failed=0>>><M=1><X=1>><Unlock the Door><^><remote>>
 ==events	root
->>DB	I1	<R=<DB><<<Date/Time><D>><M=1><X=1>><Demo access control device just powered up><^><1><remote>>
+>>DB	I1	<R=<DB><<<DT><D><D=Date/Time>><M=1><X=1>><Demo access control device just powered up><^><1><remote>>
 >>ACE	S0	<R=<ACE><<<DT><D>><<DS><S>><M=1><X=1>><Access Control Events><^><0><remote>>
 #define TBL_TIMESTAMP 1
 #define STG_TIMESTAMP 1
 #define AGG_DESCRIPTOR_FILE "aggregate.xtxt"
+#define AGG_LOGIN_CONTROL 0
 #define AGG_TABLE_CONTROL 1
 #define AGG_SETTING_CONTROL 1
 #define AGG_MAX_RECONNECTION_DELAY 15

@@ -5,11 +5,20 @@ dim user_code as string(MAX_USER_CODE_LEN)
 '====================================================================
 sub on_sys_init()
 	dim i as word
-	
+	dim stg_name as string(4)
 	net.ip=IP_ADDRESS
+	
+	sock.rxbuffrq(4)
+	sock.txbuffrq(4)
+	sys.buffalloc
 	
 	if stg_start()<>EN_STG_STATUS_OK then
 		sys.halt
+	end if
+
+	if stg_check_all(stg_name)<>EN_STG_STATUS_OK then
+		stg_restore_multiple(EN_STG_INIT_MODE_OVERRIDE)
+		sys.reboot()
 	end if
 
 	if fd.mount<>PL_FD_STATUS_OK then
@@ -47,7 +56,7 @@ lbl1:		goto lbl1 'expecting the device to be rebooted
 		end if
 	wend
 
-	if agg_start(PL_SOCK_INTERFACE_NET,"admin","test_dev","pwd",AGG_IP_ADDRESS,6480,600,YES)<>EN_AGG_STATUS_OK then
+	if agg_start(PL_SOCK_INTERFACE_NET,"admin","test_dev","admin",AGG_IP_ADDRESS,6480,600,YES)<>EN_AGG_STATUS_OK then
 		sys.halt
 	end if
 

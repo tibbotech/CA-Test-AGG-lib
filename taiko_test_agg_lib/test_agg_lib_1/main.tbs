@@ -4,9 +4,14 @@ include "global.tbh"
 sub on_sys_init()
 	net.ip=IP_ADDRESS
 	
-	if agg_start(PL_SOCK_INTERFACE_NET,"admin","test_dev","pwd",AGG_IP_ADDRESS,6480,600,YES)<>EN_AGG_STATUS_OK then
+	sock.txbuffrq(4)
+	sock.rxbuffrq(4)
+	sys.buffalloc
+	
+	if agg_start(PL_SOCK_INTERFACE_NET,"admin","test_dev","admin",AGG_IP_ADDRESS,6480,600,YES)<>EN_AGG_STATUS_OK then
 		sys.halt
 	end if
+	
 end sub
 
 sub on_sys_timer()
