@@ -145,5 +145,6 @@ location=project
 path=aggregate.xtxt
 type=text
 format=
+condition=
 locked=no
 location=project

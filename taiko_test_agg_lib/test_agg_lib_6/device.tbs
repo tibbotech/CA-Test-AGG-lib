@@ -27,6 +27,7 @@ function callback_agg_device_function(byref function_name as string ,byref conte
 		function_output=""
 		agg_record_encode(function_output,"1")
 	end select
+	callback_agg_device_function=OK
 end function
 
 sub callback_agg_synchronized()
