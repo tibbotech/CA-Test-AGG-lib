@@ -5,9 +5,7 @@ dim user_code as string(MAX_USER_CODE_LEN)
 '====================================================================
 sub on_sys_init()
 	dim i as word
-	
-	net.ip=IP_ADDRESS
-	
+		
 	if stg_start()<>EN_STG_STATUS_OK then
 		sys.halt
 	end if
@@ -47,7 +45,7 @@ lbl1:		goto lbl1 'expecting the device to be rebooted
 		end if
 	wend
 
-	if agg_start(PL_SOCK_INTERFACE_NET,"admin","test_dev","pwd",AGG_IP_ADDRESS,6480,600,YES)<>EN_AGG_STATUS_OK then
+	if agg_start("admin","test_dev","admin",AGG_IP_ADDRESS,6480,600,YES)<>EN_AGG_STATUS_OK then
 		sys.halt
 	end if
 
@@ -60,19 +58,19 @@ sub on_sys_timer()
 	agg_proc_timer()
 end sub
 
-sub on_sock_data_arrival()
+sub on_lsock_data_arrival()
 	agg_proc_data()
 end sub
 
-sub on_sock_event(newstate as enum pl_sock_state, newstatesimple as enum pl_sock_state_simple)
-	agg_proc_sock_event(newstate,newstatesimple)
+sub on_lsock_event(newstate as enum pl_lsock_state)
+	agg_proc_lsock_event(newstate)
 end sub
 
 sub on_button_pressed()
 	generate_door_event()
 end sub
 
-sub on_sock_data_sent()
+sub on_lsock_data_sent()
 	agg_proc_data_sent()
 end sub
 

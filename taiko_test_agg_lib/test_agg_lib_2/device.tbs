@@ -25,7 +25,7 @@ sub callback_agg_synchronized()
 	
 end sub
 
-sub callback_agg_convert_setting(byref setting_name as string, index as byte, byref setting_value as string, op as en_agg_rdwr)
+function callback_agg_convert_setting(byref setting_name as string, index as byte, byref setting_value as string, op as en_agg_rdwr) as ok_ng
 	select case setting_name
 	case "UT":
 		'UT A-variable measures time in seconds, while the UT seconds goes with half-seconds. This is why we /2 and *2 when reading and writing
@@ -35,7 +35,8 @@ sub callback_agg_convert_setting(byref setting_name as string, index as byte, by
 			setting_value=str(val(setting_value)*2)
 		end if
 	end select
-end sub
+	callback_agg_convert_setting = OK
+end function
 
 sub callback_stg_error(byref stg_name_or_num as string,index as byte,status as en_stg_status_codes)
 	
@@ -46,5 +47,21 @@ sub callback_stg_pre_get(byref stg_name_or_num as string,index as byte,byref stg
 end sub
 
 sub callback_stg_post_set(byref stg_name_or_num as string, index as byte,byref stg_value as string)
+	
+end sub
+
+function callback_agg_external_data_source(byref source_type as string, byref parameter1 as string, byref parameter2 as string, byref parameter3 as string, rw as en_agg_rdwr)as ok_ng
+	
+end function
+
+function callback_agg_external_data_modtime_sg(byref source_type as string, byref item_name as string, byref date_time as string, op as en_agg_rdwr) as ok_ng
+	
+end function
+
+function callback_agg_setting_saved(byref setting_name as string,index as byte, byref setting_val as string) as byte
+	
+end function
+
+sub callback_agg_setting_error(byref setting_name as string, error_code as byte)
 	
 end sub

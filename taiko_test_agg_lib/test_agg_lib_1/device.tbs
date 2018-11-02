@@ -25,3 +25,14 @@ sub callback_agg_synchronized()
 	
 end sub
 
+function callback_agg_external_data_source(byref source_type as string, byref parameter1 as string, byref parameter2 as string, byref parameter3 as string, rw as en_agg_rdwr) as ok_ng
+	
+end function
+
+function callback_agg_external_data_modtime_sg(byref source_type as string, byref item_name as string, byref date_time as string, op as en_agg_rdwr) as ok_ng
+	
+end function
+
+sub callback_agg_firmware_upload_progress(total_size as dword, remain_size as dword)
+	
+end sub

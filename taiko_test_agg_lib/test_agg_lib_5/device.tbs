@@ -33,10 +33,9 @@ sub callback_agg_synchronized()
 	generate_boot_event()
 end sub
 
-sub callback_agg_convert_setting(byref setting_name as string, index as byte, byref setting_value as string, op as en_agg_rdwr)
+function callback_agg_convert_setting(byref setting_name as string, index as byte, byref setting_value as string, op as en_agg_rdwr) as ok_ng
 	
-end sub
-
+end function
 
 sub callback_stg_error(byref stg_name_or_num as string,index as byte,status as en_stg_status_codes)
 	
@@ -67,14 +66,38 @@ sub callback_tbl_modified(byref file_name as string, modified_operation as en_tb
 end sub
 
 sub generate_boot_event()
-		dim s, event_str as string
-		dim dcount,mcount as word
-		dim sec as byte
+	dim s, event_str as string
+	dim dcount,mcount as word
+	dim sec as byte
 
-		rtc.getdata(dcount,mcount,sec)
-		td_to_str(s,dcount,mcount,sec,0)
-		td_str_date_time_reformat(s,TD_STR_ADD_FORMATTING,TD_DATE_FORMAT_YYYYMMDD)
+	rtc.getdata(dcount,mcount,sec)
+	td_to_str(s,dcount,mcount,sec,0)
+	td_str_date_time_reformat(s,TD_STR_ADD_FORMATTING,TD_DATE_FORMAT_YYYYMMDD)
 		
-		agg_record_encode(event_str,s)
-		agg_fire_instant_event("root","DB",event_str,EN_AGG_EVENT_LEVEL_USE_DEFAULT)
+	agg_record_encode(event_str,s)
+	agg_fire_instant_event("root","DB",event_str,EN_AGG_EVENT_LEVEL_USE_DEFAULT)
+end sub
+
+function callback_agg_external_data_source(byref source_type as string, byref parameter1 as string, byref parameter2 as string, byref parameter3 as string, rw as en_agg_rdwr)as ok_ng
+	
+end function
+
+function callback_agg_external_data_modtime_sg(byref source_type as string, byref item_name as string, byref date_time as string, op as en_agg_rdwr) as ok_ng
+	
+end function
+
+function callback_agg_setting_saved(byref setting_name as string,index as byte, byref setting_val as string) as byte
+	
+end function
+
+sub callback_agg_setting_error(byref setting_name as string, error_code as byte)
+	
+end sub
+
+sub callback_agg_table_error(byref table_name as string, error_code as byte)
+	
+end sub
+
+sub callback_agg_convert_table_field(byref table_name as string, byref field_name as string, byref field_value as string, op as en_agg_rdwr)
+	
 end sub

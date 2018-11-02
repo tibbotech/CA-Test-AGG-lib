@@ -1,6 +1,7 @@
 ==info	root	<R=<AGG_TEST_DEVICE><apoint>>
-==variables	root	<R=<version><<<version><S>> <M=1> <X=1>><Version><1><0><^><remote|General><^>>
-~~<R=<date><<<date><D>> <M=1> <X=1>><Date/Time><1><0><^><remote|General><^>>
+==variables	root	<R=<date><<<date><D>> <M=1> <X=1>><Date/Time><1><0><^><^><^>>
+~~<R=<version><<<version><S>> <M=1> <X=1>><Version><1><0><^><remote|General><^>>
+~~<R=<datex><<<datex><D>> <M=1> <X=1>><Date/Time><1><0><^><remote|General><^>>
 ~~<R=<modtime><<<variable><S>> <<modtime><D><F=N>>><Modification time><1><0><^><^><^>>
 >>BR	S	<R=<BR><<<BR><I><V=<L=0 13>><S=<1200=0><2400=1><4800=2><9600=3><19200=4><38400=5><57600=6><115200=7><150=8><300=9><600=10><28800=11><230400=12><460800=13>>><M=1><X=1>><Baudrate><1><1><^><remote|Access Control><^>>
 >>EG	S	<R=<EG><<<EG><B>><M=1><X=1>><Generate Event><1><1><^><remote|Access Control><^>>
