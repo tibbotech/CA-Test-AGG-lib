@@ -3,13 +3,22 @@ include "global.tbh"
 '====================================================================
 sub on_sys_init()
 	dim i as word
-	
+	dim stg_name as string(4)
 	net.ip=IP_ADDRESS
+	
+	sock.rxbuffrq(4)
+	sock.txbuffrq(4)
+	sys.buffalloc
 	
 	if stg_start()<>EN_STG_STATUS_OK then
 		sys.halt
 	end if
 
+	if stg_check_all(stg_name)<>EN_STG_STATUS_OK then
+		stg_restore_multiple(EN_STG_INIT_MODE_OVERRIDE)
+		sys.reboot()
+	end if
+	
 	if fd.mount<>PL_FD_STATUS_OK then
 		if fd.formatj(fd.availableflashspace/2,32,100)<>PL_FD_STATUS_OK then
 			sys.halt

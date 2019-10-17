@@ -1,8 +1,9 @@
 'DEFINES-------------------------------------------------------------
 Const FIRMWARE_VERSION="{AGG_TEST_DEVICE V1.00}"
 Const IP_ADDRESS="192.168.1.200"		'<---- change as needed
-Const AGG_IP_ADDRESS="192.168.1.56"		'<---- change as needed
+Const AGG_IP_ADDRESS="192.168.1.72"		'<---- change as needed
 
+#define AGG_REMOTE_FIRMWARE_UPLOAD 0
 
 'INCLUDES------------------------------------------------------------
 
